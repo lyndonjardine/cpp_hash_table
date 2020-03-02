@@ -17,7 +17,7 @@ int main()
 	myHashTable.nodeInsert("Third", "Fourth");
 	myHashTable.nodeInsert("Fifth", "Sixth");
 
-	myHashTable.nodeInsert("fsvdfv", "nhdf");
+	myHashTable.nodeInsert("Lyndon", "Jardine");
 	myHashTable.nodeInsert("rsdrvf", "omiuon");
 	myHashTable.nodeInsert("nxe", "dwr53");
 
@@ -29,7 +29,23 @@ int main()
 	myHashTable.nodeInsert("uiujpn", "hfdcads");
 	myHashTable.nodeInsert("oijpb", "sdxd");
 
-	myHashTable.displayHash();
+	//the search function returns a pointer to the node, this ends up being NULL if a node is not found.
+	std::cout << "Lyndon's last name is: " << myHashTable.nodeSearch("Lyndon")->getLastName() << std::endl;
+
+	//testing a chained key
+	std::cout << "searching for nxe, result: " << myHashTable.nodeSearch("nxe")->getLastName() << std::endl;
+
+
+	TableEntry* searchNode = NULL;
+	searchNode = myHashTable.nodeSearch("this will return null");
+	if (searchNode == NULL)
+	{
+		std::cout << "no node was found" << std::endl;
+	}
+
+
+
+	//myHashTable.displayHash();
     return 0;
 }
 

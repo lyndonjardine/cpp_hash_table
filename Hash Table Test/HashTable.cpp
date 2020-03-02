@@ -40,7 +40,7 @@ void HashTable::nodeInsert(std::string firstNameKey, std::string lastName)
 	}
 	else
 	{
-
+		std::cout << "CHAINING THE KEY: " << firstNameKey << std::endl;
 		//access the entry's linked list
 		TableEntry* currentEntry = bucketArray[hashIndex].getAddress();
 
@@ -145,13 +145,50 @@ void HashTable::expand(int oldCapacity, int oldSize)
 }
 
 //might consider changing the return type
-void HashTable::nodeSearch(std::string searchFirstName)
+TableEntry* HashTable::nodeSearch(std::string searchFirstName)
 {
+	//put the name you are searching for into the hash function
+	int searchKey = hashFunction(searchFirstName);
 
+	//check if the index the key matches contains the name you are searching for
+
+	//pointer pointing to the node, default is NULL so if no node is found, NULL is returned
+	TableEntry* foundNode = NULL;
+	if (bucketArray[searchKey].getFirstName() == searchFirstName)
+	{
+		// the node is found directly at the index
+		foundNode = bucketArray[searchKey].getAddress();
+	}
+	else if (bucketArray[searchKey].getNext() != NULL)
+	{
+		//search the chained nodes for a matching key
+		TableEntry* currentNode = bucketArray[searchKey].getNext();
+		//search until the end is reached or a matching key is found
+		while (currentNode != NULL && foundNode == NULL)
+		{
+			//if a matching key is found, this also exits the loop
+			if (currentNode->getFirstName() == searchFirstName)
+			{
+				//this changes the null pointer
+				foundNode = currentNode;
+			}
+
+			//move to the next node
+			currentNode = currentNode->getNext();
+		}
+	}
+
+	if (foundNode == NULL)
+	{
+		std::cout << "Error: no node with that key exists!" << std::endl;
+	}
+
+	//this is null if no matching key was found
+	return foundNode;
 }
 void HashTable::nodeDelete(std::string firstNameKey)
 {
-
+	
 
 	
 }

@@ -30,8 +30,8 @@ public:
 	//for shrinking the table when a capacity to size ratio is reached
 	void shrink(int capacity, int size);
 
-	//node search is void, might want to change it to string or TableEntry
-	void nodeSearch(std::string searchFirstName);
+	///Returns a pointer to the table entry, this probably isnt the best implementation of a search
+	TableEntry* nodeSearch(std::string searchFirstName);
 
 	void nodeDelete(std::string firstNameKey);
 
