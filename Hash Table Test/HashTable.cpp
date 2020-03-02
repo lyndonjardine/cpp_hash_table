@@ -26,13 +26,11 @@ HashTable::HashTable(int capacity)
 void HashTable::nodeInsert(std::string firstNameKey, std::string lastName)
 {
 	//put the key through the hash function
-	//int hashIndex = hashFunction(firstNameKey);
-	int hashIndex = 0;
-	//use the hashed key as the index of the list
-	//figure out why this doesnt work
-	//myHashTable[hashIndex];
+	int hashIndex = hashFunction(firstNameKey);
 
-	//check for a collision, if getFirstName is empty, there is no collision
+	//use the hashed key as the index of the list
+
+	//check for a collision, if getFirstName is empty, there is no collision, also a key should not be empty
 	if (bucketArray[hashIndex].getFirstName() == "")
 	{
 
@@ -70,8 +68,80 @@ void HashTable::nodeInsert(std::string firstNameKey, std::string lastName)
 
 	}
 
-	
+	//increase the size
+	size++;
 
+	//check if the size has reached 70% of the capacity, call the expand function, remember to typecast to float, otherwise the decimal for percentage will get rounded up/down
+	if ((((float)size / (float)capacity) * 100) > 70)
+	{
+		std::cout << "EXPANDING, CAPACITY: " << capacity << " SIZE: " << size << std::endl;
+		expand(capacity, size);
+	}
+
+}
+
+void HashTable::expand(int oldCapacity, int oldSize)
+{
+	//double the capacity
+	this->capacity = oldCapacity * 2;
+	//reset size
+	size = 0;
+
+	//creates a pointer to hold the old array, YOU MAY NEED TO DELETE THIS
+	TableEntry *oldArray = bucketArray;
+	//have the original array pointer point to null
+	bucketArray = NULL;
+	//create a new table with the new capacity and have the bucketArray pointer point to it
+	bucketArray = new TableEntry[capacity];
+	
+	
+	int newHashKey = 0;
+	//loop through each element of the old table
+	for (int i = 0; i < oldCapacity; i++)
+	{
+		std::cout << "Index: " << i << " :   ";
+		//if a first node exists, otherwise skip to next bucket
+		if (oldArray[i].getFirstName() != "")
+		{
+			//hash the new key, this uses the new capacity when hashing
+			//pass in the corrosponging
+			//newHashKey = hashFunction(oldArray[i].getFirstName());
+			
+			//DONT DO THIS, IF THERE IS A (UNLIKLY) COLLISION, THE OLD DATA WOULD GET OVERWRITTEN!!!!
+			//bucketArray[newHashKey].setFirstName(oldArray[i].getFirstName());
+			//bucketArray[newHashKey].setLastName(oldArray[i].getLastName());
+
+			//pass it through the nodeInsert function so collisions are handled
+			nodeInsert(oldArray[i].getFirstName(), oldArray[i].getLastName());
+			
+			//check if there is a node chained to this index
+			if (oldArray[i].getNext() != NULL)
+			{
+				//DONT DO THIS
+				//bucketArray[newHashKey].setNext(oldArray->getNext());
+				
+				//have a pointer point to the next address
+				TableEntry* currentNode = oldArray[i].getNext();
+
+				//loop through the old chain, inserting the old keys into the new table, (nodes will chained if needed by the insert function)
+				//not sure if both conditions are needed
+				while (currentNode != NULL)
+				{
+					//insert the data as a new node
+					nodeInsert(currentNode->getFirstName(), currentNode->getLastName());
+
+					//move to the next pointer
+					currentNode = currentNode->getNext();
+				}
+
+			}
+			
+		}
+		else
+		{
+			std::cout << "Index " << i << " is Empty" << std::endl;
+		}
+	}
 }
 
 //might consider changing the return type
@@ -82,22 +152,30 @@ void HashTable::nodeSearch(std::string searchFirstName)
 void HashTable::nodeDelete(std::string firstNameKey)
 {
 
+
+	
+}
+//check if the size to capacity ratio is small enough to shrink, this means when the capacity is below 30%? it should be shrinked
+void HashTable::shrink(int capacity, int size)
+{
+
 }
 
 int HashTable::hashFunction(std::string key)
 {
 	//for this hash function,
 	//1 sum up the ascii values for the string
-	//multiply by 10?
 	int keySum = 0;
 	for (int i = 0; i < key.length(); i++)
 	{
 		//type cast to int
-		keySum += key[i];
+		keySum += (int)key[i];
 	}
 
 	//add the length of the key string just for some extra randomness
+	
 	keySum += key.length();
+	//keySum = (keySum * 3) / 2;
 
 	std::cout << "hash key generated: " << keySum << std::endl;
 	//return the remainder of the sum divided by the capacity, 
@@ -105,3 +183,39 @@ int HashTable::hashFunction(std::string key)
 	return (keySum % capacity);
 }
 
+void HashTable::displayHash()
+{
+	for (int i = 0; i < capacity; i++)
+	{
+		std::cout << "Index: " << i << " :   ";
+		//if a first node exists, otherwise skip to next bucket
+		if (bucketArray[i].getFirstName() != "")
+		{
+			std::cout << bucketArray[i].getFirstName() << " " << bucketArray[i].getLastName();
+			//if a next node exists
+			if (bucketArray[i].getNext() != NULL)
+			{
+				std::cout << "," << bucketArray[i].getNext()->getFirstName() << " " << bucketArray[i].getNext()->getLastName();
+				//create pointer to move through the list
+				TableEntry* currentNode = bucketArray[i].getNext();
+				while (currentNode->getNext() != NULL)
+				{
+					currentNode = currentNode->getNext();
+					std::cout << "," << currentNode->getFirstName() << " " << currentNode->getLastName();
+				}
+				std::cout << std::endl;
+			}
+			else
+			{
+				std::cout << std::endl;
+			}
+		}
+		else
+		{
+			std::cout << "Index Empty" << std::endl;
+		}
+		
+	}
+
+
+}

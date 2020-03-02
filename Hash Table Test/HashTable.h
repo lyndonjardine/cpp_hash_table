@@ -9,6 +9,8 @@ private:
 
 	//capacity is the maximum number of nodes that can be stored in the hashmap
 	int capacity;
+	//size is the amount of elements stored in the table
+	int size = 0;
 	
 	//list containing each bucket
 	//std::list<TableEntry> *myHashTable;
@@ -22,10 +24,19 @@ public:
 	//insert takes in the firstName and lastName, the firstName is the key
 	void nodeInsert(std::string firstNameKey, std::string lastName);
 
+	//for expanding the table when a size to capacity ratio is reached
+	void expand(int capacity, int size);
+
+	//for shrinking the table when a capacity to size ratio is reached
+	void shrink(int capacity, int size);
+
 	//node search is void, might want to change it to string or TableEntry
 	void nodeSearch(std::string searchFirstName);
 
 	void nodeDelete(std::string firstNameKey);
 
 	int hashFunction(std::string key);
+
+	//function loops through each index/chain displaying all data, probably shouldn't be run on a large hash table
+	void displayHash();
 };
