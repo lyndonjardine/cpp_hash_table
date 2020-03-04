@@ -40,6 +40,7 @@ TableEntry* TableEntry::getAddress()
 {
 	return this;
 }
+
 TableEntry* TableEntry::getNext()
 {
 	return this->nextEntry;

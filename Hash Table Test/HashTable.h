@@ -19,6 +19,7 @@ private:
 public:
 	//function takes a string as a key and returns the hashed key to use as an index
 	HashTable(int capacity);
+	~HashTable();
 
 	//standard hash table functions
 	//insert takes in the firstName and lastName, the firstName is the key
@@ -27,14 +28,17 @@ public:
 	//for expanding the table when a size to capacity ratio is reached
 	void expand(int capacity, int size);
 
-	//for shrinking the table when a capacity to size ratio is reached
-	void shrink(int capacity, int size);
+
 
 	///Returns a pointer to the table entry, this probably isnt the best implementation of a search
 	TableEntry* nodeSearch(std::string searchFirstName);
 
-	void nodeDelete(std::string firstNameKey);
+	//finds and deletes a node, returns true if successful
+	bool nodeDelete(std::string firstNameKey);
 
+	void editLastName(std::string firstNameKey, std::string newLastName);
+
+	//hashes the key
 	int hashFunction(std::string key);
 
 	//function loops through each index/chain displaying all data, probably shouldn't be run on a large hash table

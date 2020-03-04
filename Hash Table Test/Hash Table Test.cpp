@@ -25,15 +25,17 @@ int main()
 	myHashTable.nodeInsert("zxcv", "hfdcads");
 	myHashTable.nodeInsert("iuimk", "sdxd");
 
-	myHashTable.nodeInsert("gsiufonfvuw", "qwerty");
-	myHashTable.nodeInsert("uiujpn", "hfdcads");
-	myHashTable.nodeInsert("oijpb", "sdxd");
+	myHashTable.nodeInsert("abc", "qwerty");
+	myHashTable.nodeInsert("bac", "hfdcads");
+	myHashTable.nodeInsert("cba", "sdxd");
+
+
 
 	//the search function returns a pointer to the node, this ends up being NULL if a node is not found.
 	std::cout << "Lyndon's last name is: " << myHashTable.nodeSearch("Lyndon")->getLastName() << std::endl;
 
 	//testing a chained key
-	std::cout << "searching for nxe, result: " << myHashTable.nodeSearch("nxe")->getLastName() << std::endl;
+	//std::cout << "searching for nxe, result: " << myHashTable.nodeSearch("nxe")->getLastName() << std::endl;
 
 
 	TableEntry* searchNode = NULL;
@@ -42,10 +44,24 @@ int main()
 	{
 		std::cout << "no node was found" << std::endl;
 	}
-
-
-
 	//myHashTable.displayHash();
+	//myHashTable.nodeDelete("Lyndon");
+	//std::cout << "---after delete---" << std::endl;
+	//myHashTable.displayHash();
+
+	//myHashTable.nodeDelete("nxe");
+	//std::cout << "---after delete---" << std::endl;
+	//myHashTable.displayHash();
+
+
+	//myHashTable.nodeDelete("bac");
+	//myHashTable.nodeDelete("cba");
+	//std::cout << "---after delete---" << std::endl;
+	//myHashTable.displayHash();
+
+	myHashTable.editLastName("Lyndon", "asdf");
+	myHashTable.displayHash();
+
     return 0;
 }
 
