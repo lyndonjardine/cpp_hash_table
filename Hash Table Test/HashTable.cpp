@@ -393,5 +393,6 @@ void HashTable::displayHash()
 		{
 			std::cout << "Index Empty" << std::endl;
 		}
+
 	}
 }
